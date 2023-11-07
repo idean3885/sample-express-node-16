@@ -1,4 +1,13 @@
-FROM node:16-alpine
+#FROM node:16-alpine
+
+FROM alpine:3.18
+
+RUN apk update && \
+    apk upgrade && \
+    apk add git && \
+    apk add ca-certificates && \
+    apk add curl
+RUN apk add nodejs npm
 
 WORKDIR /app
 
