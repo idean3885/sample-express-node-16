@@ -6,8 +6,7 @@ RUN apk update && \
     apk upgrade && \
     apk add git && \
     apk add ca-certificates && \
-    apk add curl && \
-    apk add bash
+    apk add curl
 
 COPY --from=node /usr/lib /usr/lib
 COPY --from=node /usr/local/share /usr/local/share
