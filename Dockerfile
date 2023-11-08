@@ -1,4 +1,4 @@
-#FROM node:16-alpine
+FROM node:16.15.1-alpine AS node
 
 FROM alpine:3.18
 
@@ -6,20 +6,19 @@ RUN apk update && \
     apk upgrade && \
     apk add git && \
     apk add ca-certificates && \
-    apk add curl
-RUN apk add nodejs npm
+    apk add curl && \
+    apk add bash
+
+COPY --from=node /usr/lib /usr/lib
+COPY --from=node /usr/local/share /usr/local/share
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/include /usr/local/include
+COPY --from=node /usr/local/bin /usr/local/bin
 
 WORKDIR /app
-
-#npm install 을 위해, package.json과 package-lock.json을 먼저 copy해둠
-COPY package*.json /app/
-
-RUN npm install
-
 COPY . /app
+RUN npm install
 
 EXPOSE 3000
 
-#컨테이너가 켜지자마자 실행할 명령어
-#npm start : package.json의 scripts에 있는 start 명령어를 실행
-CMD ["npm", "start"]
+ENTRYPOINT npm run start
