@@ -1,4 +1,4 @@
-FROM node:16.15.1-alpine AS node
+FROM node:16-alpine AS node
 
 FROM alpine:3.18
 
